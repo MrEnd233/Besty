@@ -15,10 +15,10 @@ body {
     background: linear-gradient(135deg, #1a0a0a 0%, #2d1515 50%, #1a0a0a 100%);
     min-height: 100vh;
     min-height: 100dvh;
-    display: flex;
+   display: flex;
     justify-content: center;
-    align-items: flex-start; /* ← ИЗМЕНИЛ с center */
-    overflow-y: auto; /* ← ИЗМЕНИЛ с hidden */
+    align-items: center;
+    overflow-y: auto;
     overflow-x: hidden;
     color: #f5e6c8;
 }
@@ -431,6 +431,7 @@ select:focus-visible {
     z-index: 2000;
     padding: clamp(10px, 2vw, 20px);
     animation: fadeIn 0.2s ease-out;
+    overflow-y: auto;
 }
 
 .modal-content {
@@ -446,6 +447,127 @@ select:focus-visible {
     overflow-y: auto;
     position: relative;
     animation: dialogPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+/* ==================== МОДАЛЬНОЕ ОКНО ВЫБОРА ФИГУРОК ==================== */
+.token-select-content {
+    max-width: min(650px, 92vw) !important;
+    text-align: center;
+}
+
+.players-token-select {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(12px, 2vw, 18px);
+    margin: clamp(15px, 2.5vh, 25px) 0;
+}
+
+.player-token-select {
+    background: rgba(255, 248, 225, 0.8);
+    border: 2px solid #d4af37;
+    border-radius: clamp(12px, 2vw, 18px);
+    padding: clamp(12px, 1.8vw, 18px) clamp(15px, 2.5vw, 25px);
+    text-align: left;
+    transition: all 0.3s;
+}
+
+.player-token-select:hover {
+    border-color: #8b0000;
+    box-shadow: 0 0 clamp(10px, 1.5vw, 15px) rgba(212, 175, 55, 0.3);
+}
+
+.player-token-select h3 {
+    font-size: clamp(15px, 2.2vw, 18px);
+    color: #5d4037;
+    margin-bottom: clamp(8px, 1.2vh, 12px);
+    font-weight: 700;
+}
+
+.token-dropdown {
+    width: 100%;
+    padding: clamp(10px, 1.5vw, 14px) clamp(14px, 2vw, 18px);
+    border-radius: clamp(8px, 1.2vw, 12px);
+    border: 2px solid #d4af37;
+    background: #fffef5;
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(16px, 2.4vw, 20px);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #2d1515;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b0000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 35px;
+}
+
+.token-dropdown:hover {
+    border-color: #8b0000;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+}
+
+.token-dropdown:focus {
+    border-color: #8b0000;
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.4);
+    outline: none;
+}
+
+.player-count-selector {
+    background: rgba(255, 248, 225, 0.6);
+    border: 2px solid #d4af37;
+    border-radius: clamp(12px, 2vw, 18px);
+    padding: clamp(12px, 1.8vw, 18px) clamp(15px, 2.5vw, 25px);
+    margin-bottom: clamp(15px, 2.5vh, 25px);
+    text-align: left;
+}
+
+.player-count-selector label {
+    display: block;
+    font-weight: 700;
+    font-size: clamp(14px, 2vw, 16px);
+    color: #5d4037;
+    margin-bottom: clamp(8px, 1.2vh, 12px);
+}
+
+#player-count-select {
+    width: 100%;
+    padding: clamp(10px, 1.5vw, 14px) clamp(14px, 2vw, 18px);
+    border-radius: clamp(8px, 1.2vw, 12px);
+    border: 2px solid #d4af37;
+    background: #fffef5;
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(15px, 2.2vw, 18px);
+    font-weight: 600;
+    cursor: pointer;
+    color: #2d1515;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b0000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 35px;
+}
+
+#player-count-select:hover {
+    border-color: #8b0000;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+}
+
+#player-count-select:focus {
+    border-color: #8b0000;
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.4);
+    outline: none;
+}
+
+/* Кнопки в модалке */
+.token-select-content .action-btn {
+    margin: clamp(4px, 0.6vh, 6px) clamp(4px, 0.6vw, 6px);
+    min-width: clamp(180px, 30vw, 250px);
+    font-size: clamp(15px, 2.2vw, 18px);
+    padding: clamp(12px, 1.8vw, 16px) clamp(20px, 3vw, 30px);
 }
 
 .modal-content h2 {
@@ -519,12 +641,13 @@ select:focus-visible {
 /* ==================== ИГРОВОЙ КОНТЕЙНЕР ==================== */
 .game-container {
     width: 100vw;
-    min-height: 100vh; /* ← ИЗМЕНИЛ с height */
+    min-height: 100vh;
     min-height: 100dvh;
     display: flex;
     flex-direction: column;
     padding: clamp(5px, 1vw, 10px) clamp(10px, 2vw, 20px);
     background: linear-gradient(135deg, #1a0a0a 0%, #2d1515 50%, #1a0a0a 100%);
+    overflow-y: auto;
 }
 
 
@@ -621,23 +744,26 @@ select:focus-visible {
     gap: clamp(10px, 2vw, 20px);
     flex: 1;
     min-height: 0;
-}
-
-.board-wrapper {
-    position: relative;
-    flex: 2;
-    display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.board-grid {
+.board-wrapper {
     position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+}
+
+.board-grid {
+   position: relative;
     display: grid;
     grid-template-columns: repeat(11, 1fr);
     grid-template-rows: repeat(11, 1fr);
-    width: min(90vh, 90vw, 800px);
-    height: min(90vh, 90vw, 800px);
+    width: min(85vh, 85vw, 700px);
+    height: min(85vh, 85vw, 700px);
     aspect-ratio: 1/1;
     background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
     border: clamp(3px, 0.5vw, 6px) solid #2e3b2e;
