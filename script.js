@@ -332,6 +332,13 @@ function isPropertyCell(cell) { return cell && ['street', 'railroad', 'utility']
 function loadSettings() {
     const saved = localStorage.getItem('monopoly_settings');
     if (saved) settings = { ...settings, ...JSON.parse(saved) };
+    // Применяем язык из настроек
+    loadLanguage();
+    // Обновляем селект языка в настройках
+    const langSelect = document.getElementById('language-select');
+    if (langSelect) langSelect.value = currentLang;
+    // Обновляем все тексты сразу после загрузки
+    setTimeout(() => updateAllTexts(), 100);
 }
 
 // ==================== АВТОРИЗАЦИЯ ====================
@@ -518,8 +525,24 @@ function bindAllEvents() {
     document.getElementById('close-load').onclick = () => DOM.loadModal.classList.add('hidden');
     document.getElementById('cancel-load').onclick = () => DOM.loadModal.classList.add('hidden');
     document.getElementById('cancel-token-select').onclick = () => DOM.tokenModal.classList.add('hidden');
-    document.getElementById('save-settings-btn').onclick = () => { DOM.settingsModal.classList.add('hidden'); };
-    document.getElementById('start-local-game-btn').onclick = startLocalGame;
+    document.getElementById('save-settings-btn').onclick = () => {
+    // Сохраняем настройки
+    settings.startingMoney = parseInt(document.getElementById('starting-money').value);
+    settings.botCount = parseInt(document.getElementById('bot-count').value);
+    settings.animationSpeed = parseFloat(document.getElementById('animation-speed').value);
+    settings.soundEnabled = document.getElementById('sound-enabled').value === 'true';
+    settings.fastMode = document.getElementById('fast-mode').value === 'true';
+    
+    // Сохраняем язык
+    const newLang = document.getElementById('language-select').value;
+    setLanguage(newLang);
+    
+    // Сохраняем в localStorage
+    localStorage.setItem('monopoly_settings', JSON.stringify(settings));
+    
+    DOM.settingsModal.classList.add('hidden');
+    showNotification('✅ ' + (currentLang === 'ru' ? 'Настройки сохранены!' : 'Settings saved!'), 'success');
+};document.getElementById('start-local-game-btn').onclick = startLocalGame;
     
     DOM.rollBtn.onclick = () => {
         console.log('🖱️ Нажата БРОСИТЬ | canRoll:', gameState.canRoll, '| myTurn:', isMyMultiplayerTurn());
@@ -1636,6 +1659,7 @@ function initGame() {
     DOM.rollBtn.disabled = false; DOM.endTurnBtn.disabled = true; DOM.buildBtn.disabled = true;
     gameState.gameStartTime = Date.now(); startGameTimer();
     DOM.gameMessage.textContent = `🎯 Ход: ${gameState.players[0].name}`; addLog(`🎮 Игра началась! Капитал: ${settings.startingMoney}$`, 'info');
+    updateAllTexts();
 }
 
 let gameTimer = null;

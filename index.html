@@ -15,7 +15,7 @@
         <div class="dice-spinner">
             <div class="cube"></div>
         </div>
-        <h2>ЗАГРУЗКА МОНОПОЛИИ</h2>
+        <h2 data-i18n="loading">ЗАГРУЗКА МОНОПОЛИИ</h2>
         <div class="progress-bar">
             <div id="progress-fill" class="progress-fill"></div>
         </div>
@@ -28,23 +28,23 @@
     <div class="auth-container">
         <div class="auth-header">
             <h1>🎲 МОНОПОЛИЯ</h1>
-            <p>Войдите или зарегистрируйтесь</p>
+            <p data-i18n="auth_subtitle">Войдите или зарегистрируйтесь</p>
         </div>
         <div id="login-form" class="auth-form">
-            <h3>🔑 ВХОД</h3>
-            <input type="text" id="login-username" placeholder="Логин" autocomplete="off">
-            <input type="password" id="login-password" placeholder="Пароль">
-            <button onclick="loginUser()" class="auth-btn primary">ВОЙТИ</button>
-            <p class="auth-switch">Нет аккаунта? <a href="#" onclick="showRegisterForm()">Зарегистрироваться</a></p>
-            <p class="auth-switch"><a href="#" onclick="guestLoginUser()">Войти как гость</a></p>
+            <h3 data-i18n="auth_login">🔑 ВХОД</h3>
+            <input type="text" id="login-username" data-i18n="auth_username_placeholder" placeholder="Логин" autocomplete="off">
+            <input type="password" id="login-password" data-i18n="auth_password_placeholder" placeholder="Пароль">
+            <button onclick="loginUser()" class="auth-btn primary" data-i18n="auth_login_btn">ВОЙТИ</button>
+            <p class="auth-switch"><span data-i18n="auth_no_account">Нет аккаунта?</span> <a href="#" onclick="showRegisterForm()" data-i18n="auth_register_link">Зарегистрироваться</a></p>
+            <p class="auth-switch"><a href="#" onclick="guestLoginUser()" data-i18n="auth_guest_login">Войти как гость</a></p>
         </div>
         <div id="register-form" class="auth-form hidden">
-            <h3>📝 РЕГИСТРАЦИЯ</h3>
-            <input type="text" id="reg-username" placeholder="Логин (мин. 3 символа)" autocomplete="off">
-            <input type="password" id="reg-password" placeholder="Пароль (мин. 4 символа)">
-            <input type="password" id="reg-password2" placeholder="Повторите пароль">
-            <button onclick="registerUser()" class="auth-btn primary">ЗАРЕГИСТРИРОВАТЬСЯ</button>
-            <p class="auth-switch">Уже есть аккаунт? <a href="#" onclick="showLoginForm()">Войти</a></p>
+            <h3 data-i18n="auth_register">📝 РЕГИСТРАЦИЯ</h3>
+            <input type="text" id="reg-username" data-i18n="auth_reg_username" placeholder="Логин (мин. 3 символа)" autocomplete="off">
+            <input type="password" id="reg-password" data-i18n="auth_reg_password" placeholder="Пароль (мин. 4 символа)">
+            <input type="password" id="reg-password2" data-i18n="auth_reg_password2" placeholder="Повторите пароль">
+            <button onclick="registerUser()" class="auth-btn primary" data-i18n="auth_register_btn">ЗАРЕГИСТРИРОВАТЬСЯ</button>
+            <p class="auth-switch"><span data-i18n="auth_has_account">Уже есть аккаунт?</span> <a href="#" onclick="showLoginForm()" data-i18n="auth_login_link">Войти</a></p>
         </div>
         <div id="auth-error" class="auth-error hidden"></div>
     </div>
@@ -60,18 +60,18 @@
                 <button class="logout-btn" id="logout-btn" onclick="logoutUser()" title="Выйти">🚪</button>
             </div>
         </div>
-        <h1 class="game-title">MONOPOLY</h1>
+        <h1 class="game-title" data-i18n="menu_title">MONOPOLY</h1>
         <div class="menu-buttons">
-            <button id="btn-local" class="menu-btn primary">🎮 Играть локально</button>
-            <button id="btn-bot" class="menu-btn secondary">🤖 Играть с ботами</button>
-            <button onclick="createOnlineRoom()" class="menu-btn success">🌐 Создать онлайн-комнату</button>
-            <button onclick="joinOnlineRoom()" class="menu-btn secondary">🔗 Присоединиться к комнате</button>
-            <button id="btn-load" class="menu-btn success">💾 Загрузить игру</button>
-            <button id="btn-settings" class="menu-btn outline">⚙️ Настройки</button>
-            <button id="btn-rules" class="menu-btn outline">📜 Правила</button>
+            <button id="btn-local" class="menu-btn primary" data-i18n="menu_local">🎮 Играть локально</button>
+            <button id="btn-bot" class="menu-btn secondary" data-i18n="menu_bot">🤖 Играть с ботами</button>
+            <button onclick="createOnlineRoom()" class="menu-btn success" data-i18n="menu_online_create">🌐 Создать онлайн-комнату</button>
+            <button onclick="joinOnlineRoom()" class="menu-btn secondary" data-i18n="menu_online_join">🔗 Присоединиться к комнате</button>
+            <button id="btn-load" class="menu-btn success" data-i18n="menu_load">💾 Загрузить игру</button>
+            <button id="btn-settings" class="menu-btn outline" data-i18n="menu_settings">⚙️ Настройки</button>
+            <button id="btn-rules" class="menu-btn outline" data-i18n="menu_rules">📜 Правила</button>
         </div>
         <div class="menu-footer">
-            <p>Курсовой проект · Вилданов Р.Р. · ЧЭнК · ИСП-7-23</p>
+            <p data-i18n="menu_footer">Курсовой проект · Вилданов Р.Р. · ЧЭнК · ИСП-7-23</p>
         </div>
     </div>
 </div>
@@ -79,18 +79,18 @@
 <!-- ВЫБОР ФИГУРОК -->
 <div id="token-select-modal" class="modal hidden">
     <div class="modal-content token-select-content">
-        <h2>🎨 ВЫБЕРИТЕ ФИГУРКИ</h2>
+        <h2 data-i18n="token_title">🎨 ВЫБЕРИТЕ ФИГУРКИ</h2>
         <div class="players-token-select" id="token-select-container"></div>
         <div class="player-count-selector">
-            <label>Количество игроков:</label>
-            <select id="player-count-select">
+            <label data-i18n="token_players">Количество игроков:</label>
+            <select id="player-count-select" data-i18n-options="token_players_2,token_players_3,token_players_4">
                 <option value="2">2 игрока</option>
                 <option value="3">3 игрока</option>
                 <option value="4">4 игрока</option>
             </select>
         </div>
-        <button id="start-local-game-btn" class="action-btn primary">🎯 НАЧАТЬ ИГРУ</button>
-        <button id="cancel-token-select" class="action-btn secondary">↩️ НАЗАД</button>
+        <button id="start-local-game-btn" class="action-btn primary" data-i18n="token_start">🎯 НАЧАТЬ ИГРУ</button>
+        <button id="cancel-token-select" class="action-btn secondary" data-i18n="token_back">↩️ НАЗАД</button>
     </div>
 </div>
 
@@ -98,44 +98,44 @@
 <div id="settings-modal" class="modal hidden">
     <div class="modal-content settings-content">
         <span class="close-btn" id="close-settings">&times;</span>
-        <h2>⚙️ НАСТРОЙКИ</h2>
+        <h2 data-i18n="settings_title">⚙️ НАСТРОЙКИ</h2>
         <div class="settings-grid">
-            <label>Стартовый капитал:</label>
-            <select id="starting-money">
+            <label data-i18n="settings_start_money">Стартовый капитал:</label>
+            <select id="starting-money" data-i18n-options="settings_money_1000,settings_money_1500,settings_money_2000,settings_money_2500">
                 <option value="1000">1000$ (Быстрая)</option>
                 <option value="1500" selected>1500$ (Классика)</option>
                 <option value="2000">2000$ (Богатая)</option>
                 <option value="2500">2500$ (Олигарх)</option>
             </select>
-            <label>Количество ботов:</label>
-            <select id="bot-count">
+            <label data-i18n="settings_bot_count">Количество ботов:</label>
+            <select id="bot-count" data-i18n-options="settings_bot_1,settings_bot_2,settings_bot_3">
                 <option value="1">1 бот</option>
                 <option value="2" selected>2 бота</option>
                 <option value="3">3 бота</option>
             </select>
-            <label>Скорость анимации:</label>
-            <select id="animation-speed">
+            <label data-i18n="settings_anim_speed">Скорость анимации:</label>
+            <select id="animation-speed" data-i18n-options="settings_anim_fast,settings_anim_normal,settings_anim_slow">
                 <option value="0.5">Быстрая</option>
                 <option value="1" selected>Нормальная</option>
                 <option value="2">Медленная</option>
             </select>
-            <label>Звуки:</label>
-            <select id="sound-enabled">
+            <label data-i18n="settings_sound">Звуки:</label>
+            <select id="sound-enabled" data-i18n-options="settings_sound_on,settings_sound_off">
                 <option value="true" selected>Включены</option>
                 <option value="false">Выключены</option>
             </select>
-            <label>Режим:</label>
-            <select id="fast-mode">
+            <label data-i18n="settings_mode">Режим:</label>
+            <select id="fast-mode" data-i18n-options="settings_mode_normal,settings_mode_fast">
                 <option value="false" selected>Обычный</option>
                 <option value="true">Быстрая игра</option>
             </select>
-            <label>Язык:</label>
-            <select id="language-select">
+            <label data-i18n="settings_language">Язык:</label>
+            <select id="language-select" data-i18n-options="settings_lang_ru,settings_lang_en">
                 <option value="ru">🇷🇺 Русский</option>
                 <option value="en">🇬🇧 English</option>
             </select>
         </div>
-        <button id="save-settings-btn" class="action-btn primary">💾 СОХРАНИТЬ</button>
+        <button id="save-settings-btn" class="action-btn primary" data-i18n="settings_save">💾 СОХРАНИТЬ</button>
     </div>
 </div>
 
@@ -143,9 +143,9 @@
 <div id="load-modal" class="modal hidden">
     <div class="modal-content load-content">
         <span class="close-btn" id="close-load">&times;</span>
-        <h2>💾 ЗАГРУЗИТЬ ИГРУ</h2>
+        <h2 data-i18n="load_title">💾 ЗАГРУЗИТЬ ИГРУ</h2>
         <div id="save-slots" class="save-slots"></div>
-        <button id="cancel-load" class="action-btn secondary">↩️ НАЗАД</button>
+        <button id="cancel-load" class="action-btn secondary" data-i18n="load_back">↩️ НАЗАД</button>
     </div>
 </div>
 
@@ -153,8 +153,8 @@
 <div id="rules-modal" class="modal hidden">
     <div class="modal-content">
         <span class="close-btn" id="close-rules">&times;</span>
-        <h2>📖 ПРАВИЛА ИГРЫ</h2>
-        <div class="rules-text">
+        <h2 data-i18n="rules_title">📖 ПРАВИЛА ИГРЫ</h2>
+        <div class="rules-text" data-i18n="rules_text" data-i18n-html="true">
             <p><strong>1. Цель:</strong> Остаться единственным необанкротившимся игроком.</p>
             <p><strong>2. Старт:</strong> Каждый получает стартовый капитал. Проход СТАРТА +200$.</p>
             <p><strong>3. Покупка:</strong> Свободные улицы можно купить. Отказ → аукцион.</p>
@@ -172,7 +172,7 @@
 <div id="achievement-toast" class="achievement-toast hidden">
     <div class="achievement-icon">🏆</div>
     <div class="achievement-text">
-        <div class="achievement-title">Достижение разблокировано!</div>
+        <div class="achievement-title" data-i18n="achievement_unlocked">Достижение разблокировано!</div>
         <div class="achievement-name" id="achievement-name"></div>
     </div>
 </div>
@@ -182,11 +182,11 @@
     <div class="game-header">
         <div class="players-header" id="players-header"></div>
         <div class="game-stats">
-            <span id="game-time">00:00</span>
-            <span id="turn-counter">Ход: 0</span>
-            <button id="save-game-btn" class="icon-btn">💾</button>
-            <button id="trade-btn" class="icon-btn">🤝</button>
-            <button id="mortgage-btn" class="icon-btn">🏦</button>
+            <span id="game-time" data-i18n="game_time">00:00</span>
+            <span id="turn-counter" data-i18n="game_turn">Ход: 0</span>
+            <button id="save-game-btn" class="icon-btn" data-i18n="game_save">💾</button>
+            <button id="trade-btn" class="icon-btn" data-i18n="game_trade">🤝</button>
+            <button id="mortgage-btn" class="icon-btn" data-i18n="game_mortgage">🏦</button>
         </div>
     </div>
 
@@ -202,84 +202,84 @@
             <div class="dice-small" id="dice2">⚁</div>
         </div>
         <div class="control-buttons">
-            <button id="roll-btn" class="action-btn primary">🎲 БРОСИТЬ</button>
-            <button id="end-turn-btn" class="action-btn secondary" disabled>⏩ ЗАВЕРШИТЬ</button>
-            <button id="build-btn" class="action-btn success" disabled>🏗️ СТРОИТЬ</button>
-            <button id="fields-info-btn" class="action-btn info">📋 ПОЛЯ</button>
+            <button id="roll-btn" class="action-btn primary" data-i18n="game_roll">🎲 БРОСИТЬ</button>
+            <button id="end-turn-btn" class="action-btn secondary" disabled data-i18n="game_end_turn">⏩ ЗАВЕРШИТЬ</button>
+            <button id="build-btn" class="action-btn success" disabled data-i18n="game_build">🏗️ СТРОИТЬ</button>
+            <button id="fields-info-btn" class="action-btn info" data-i18n="game_fields">📋 ПОЛЯ</button>
         </div>
-        <div id="game-message" class="game-message">Нажмите "БРОСИТЬ"</div>
-        <button id="menu-back-btn" class="menu-back-btn">🏠 МЕНЮ</button>
+        <div id="game-message" class="game-message" data-i18n="game_message">Нажмите "БРОСИТЬ"</div>
+        <button id="menu-back-btn" class="menu-back-btn" data-i18n="game_menu">🏠 МЕНЮ</button>
     </div>
 
     <!-- Панель покупки -->
     <div id="property-action-panel" class="property-panel hidden">
         <div class="property-card">
             <h3 id="prop-name">Улица</h3>
-            <p id="prop-price">Цена: 0$</p>
-            <p id="prop-rent">Аренда: 0$</p>
+            <p id="prop-price" data-i18n="buy_price">💰 Цена: 0$</p>
+            <p id="prop-rent" data-i18n="buy_rent">📈 Аренда: 0$</p>
             <div class="property-actions">
-                <button id="buy-property-btn" class="action-btn success">💰 КУПИТЬ</button>
-                <button id="auction-property-btn" class="action-btn warning">🔨 АУКЦИОН</button>
+                <button id="buy-property-btn" class="action-btn success" data-i18n="buy_buy">💰 КУПИТЬ</button>
+                <button id="auction-property-btn" class="action-btn warning" data-i18n="buy_auction">🔨 АУКЦИОН</button>
             </div>
         </div>
     </div>
 
     <!-- Панель аукциона -->
     <div id="auction-panel" class="auction-panel hidden">
-        <h3>🔨 АУКЦИОН: <span id="auction-prop-name"></span></h3>
-        <p>Стартовая цена: <span id="auction-start-price">0</span>$</p>
-        <p>Текущая ставка: <span id="auction-current-bid">0</span>$</p>
-        <p>Участник: <span id="auction-bidder">-</span></p>
+        <h3><span data-i18n="auction_title">🔨 АУКЦИОН:</span> <span id="auction-prop-name"></span></h3>
+        <p><span data-i18n="auction_start">Стартовая цена:</span> <span id="auction-start-price">0</span>$</p>
+        <p><span data-i18n="auction_current">Текущая ставка:</span> <span id="auction-current-bid">0</span>$</p>
+        <p><span data-i18n="auction_bidder">Участник:</span> <span id="auction-bidder">-</span></p>
         <div class="auction-actions">
             <input type="number" id="auction-bid-input" min="1" step="10" value="10">
-            <button id="place-bid-btn" class="action-btn primary">📈 СДЕЛАТЬ СТАВКУ</button>
-            <button id="pass-auction-btn" class="action-btn secondary">🚫 ПАС</button>
+            <button id="place-bid-btn" class="action-btn primary" data-i18n="auction_bid">📈 СДЕЛАТЬ СТАВКУ</button>
+            <button id="pass-auction-btn" class="action-btn secondary" data-i18n="auction_pass">🚫 ПАС</button>
         </div>
     </div>
 
     <!-- Панель строительства -->
     <div id="build-panel" class="build-panel hidden">
-        <h3>🏗️ СТРОИТЕЛЬСТВО</h3>
+        <h3 data-i18n="build_title">🏗️ СТРОИТЕЛЬСТВО</h3>
         <div id="buildable-properties"></div>
-        <button id="close-build-panel" class="action-btn secondary">ЗАКРЫТЬ</button>
+        <button id="close-build-panel" class="action-btn secondary" data-i18n="build_close">ЗАКРЫТЬ</button>
     </div>
 
     <!-- Панель залога -->
     <div id="mortgage-panel" class="mortgage-panel hidden">
-        <h3>🏦 ЗАЛОГ НЕДВИЖИМОСТИ</h3>
+        <h3 data-i18n="mortgage_title">🏦 ЗАЛОГ НЕДВИЖИМОСТИ</h3>
         <div id="mortgageable-properties"></div>
-        <button id="close-mortgage-panel" class="action-btn secondary">ЗАКРЫТЬ</button>
+        <button id="close-mortgage-panel" class="action-btn secondary" data-i18n="mortgage_close">ЗАКРЫТЬ</button>
     </div>
 
     <!-- Панель торговли -->
     <div id="trade-panel" class="trade-panel hidden">
-        <h3>🤝 ТОРГОВЛЯ</h3>
+        <h3 data-i18n="trade_title">🤝 ТОРГОВЛЯ</h3>
         <select id="trade-partner-select"></select>
         <div class="trade-columns">
             <div class="trade-column">
-                <h4>Вы предлагаете</h4>
+                <h4 data-i18n="trade_you_offer">Вы предлагаете</h4>
                 <div id="my-properties-trade"></div>
-                <input type="number" id="my-money-trade" placeholder="Деньги" min="0">
+                <input type="number" id="my-money-trade" data-i18n="trade_money_placeholder" placeholder="Деньги" min="0">
             </div>
             <div class="trade-column">
-                <h4>Партнёр предлагает</h4>
+                <h4 data-i18n="trade_partner_offer">Партнёр предлагает</h4>
                 <div id="partner-properties-trade"></div>
-                <input type="number" id="partner-money-trade" placeholder="Деньги" min="0">
+                <input type="number" id="partner-money-trade" data-i18n="trade_money_placeholder" placeholder="Деньги" min="0">
             </div>
         </div>
         <div class="trade-actions">
-            <button id="propose-trade-btn" class="action-btn primary">📨 ПРЕДЛОЖИТЬ</button>
-            <button id="close-trade-panel" class="action-btn secondary">ЗАКРЫТЬ</button>
+            <button id="propose-trade-btn" class="action-btn primary" data-i18n="trade_propose">📨 ПРЕДЛОЖИТЬ</button>
+            <button id="close-trade-panel" class="action-btn secondary" data-i18n="trade_close">ЗАКРЫТЬ</button>
         </div>
     </div>
 
     <!-- Ответ на торговлю -->
     <div id="trade-response-panel" class="trade-response-panel hidden">
-        <h3>🤝 ПРЕДЛОЖЕНИЕ ОБМЕНА</h3>
+        <h3 data-i18n="trade_title">🤝 ПРЕДЛОЖЕНИЕ ОБМЕНА</h3>
         <p id="trade-offer-text"></p>
         <div class="trade-response-actions">
-            <button id="accept-trade-btn" class="action-btn success">✅ ПРИНЯТЬ</button>
-            <button id="reject-trade-btn" class="action-btn danger">❌ ОТКЛОНИТЬ</button>
+            <button id="accept-trade-btn" class="action-btn success" data-i18n="trade_response_accept">✅ ПРИНЯТЬ</button>
+            <button id="reject-trade-btn" class="action-btn danger" data-i18n="trade_response_reject">❌ ОТКЛОНИТЬ</button>
         </div>
     </div>
 </div>
@@ -304,8 +304,8 @@
     <div class="confirm-content">
         <p id="confirm-message">Вы уверены?</p>
         <div class="confirm-actions">
-            <button id="confirm-yes" class="action-btn success">ДА</button>
-            <button id="confirm-no" class="action-btn danger">НЕТ</button>
+            <button id="confirm-yes" class="action-btn success" data-i18n="confirm_yes">ДА</button>
+            <button id="confirm-no" class="action-btn danger" data-i18n="confirm_no">НЕТ</button>
         </div>
     </div>
 </div>
@@ -322,7 +322,7 @@
         </div>
         <div id="roulette-result" class="roulette-result hidden">
             <p id="roulette-result-text"></p>
-            <button id="roulette-ok-btn" class="action-btn primary" style="font-size:18px; padding:12px 40px;">OK</button>
+            <button id="roulette-ok-btn" class="action-btn primary" style="font-size:18px; padding:12px 40px;" data-i18n="confirm_ok">OK</button>
         </div>
     </div>
 </div>
