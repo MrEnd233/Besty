@@ -37,31 +37,66 @@ npm install
 npm start
 Открыть http://localhost:3000
 
-🇬🇧 English
-Monopoly — classic board game implemented in the browser.
+Структура проекта
+text
+├── index.html
+├── style.css
+├── script.js
+├── lang.js
+├── server.js
+├── database.js
+├── auth.js
+├── gameData.js
+└── package.json
 
-Features
-🎮 Local multiplayer (2-4 players)
+Правила игры
+Классические правила Монополии: покупка недвижимости, строительство домов и отелей, залог, торговля, аукционы, карты «Шанс» и «Казна», тюрьма.
 
-🤖 AI bots
+Достижения
+🏠 Первая покупка · 🎯 Монополист · 🏨 Отельер · 🔓 Побег · 💀 Банкрот · 💰 Богач · 🤝 Делец · 🚂 Коллекционер · 🎲 Риск · 👑 Победитель
 
-🌐 Online multiplayer
 
-💾 Game saves
+## 🇬🇧 English
 
-🏆 10 achievements
+**Monopoly** — classic board game implemented in the browser.
 
-⚙️ Customizable settings
+### Features
+- 🎮 Local multiplayer (2-4 players)
+- 🤖 AI bots
+- 🌐 Online multiplayer
+- 💾 Game saves
+- 🏆 10 achievements
+- ⚙️ Customizable settings
 
-Tech Stack
-Component	Stack
-Client	HTML5, CSS3, JavaScript
-Server	Node.js, Express
-Database	SQLite (sql.js)
-Network	WebSocket
-Auth	JWT + bcrypt
-Setup
-bash
+### Tech Stack
+| Component | Stack |
+|-----------|-------|
+| Client | HTML5, CSS3, JavaScript |
+| Server | Node.js, Express |
+| Database | SQLite (sql.js) |
+| Network | WebSocket |
+| Auth | JWT + bcrypt |
+
+### Setup
+```bash
 npm install
 npm start
+
 Open http://localhost:3000
+
+Project Structure
+text
+├── index.html
+├── style.css
+├── script.js
+├── lang.js
+├── server.js
+├── database.js
+├── auth.js
+├── gameData.js
+└── package.json
+Game Rules
+Classic Monopoly rules: property buying, house and hotel building, mortgage, trading, auctions, Chance and Community Chest cards, jail.
+
+Achievements
+🏠 First Purchase · 🎯 Monopolist · 🏨 Hotelier · 🔓 Escape · 💀 Bankrupt · 💰 Rich · 🤝 Dealer · 🚂 Collector · 🎲 Risk · 👑 Winner
