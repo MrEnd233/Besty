@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>МОНОПОЛИЯ · ЧЭнК · Вилданов Р.Р.</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ПРЕЛОАДЕР -->
+<div id="preloader" class="preloader">
+    <div class="preloader-content">
+        <div class="dice-spinner">
+            <div class="cube"></div>
+        </div>
+        <h2>ЗАГРУЗКА МОНОПОЛИИ</h2>
+        <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill"></div>
+        </div>
+        <p class="preloader-subtitle">ЧЭнК · Вилданов Р.Р. · 2026</p>
+    </div>
+</div>
+
+<!-- ОКНО АВТОРИЗАЦИИ -->
+<div id="auth-modal" class="auth-modal hidden">
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1>🎲 МОНОПОЛИЯ</h1>
+            <p>Войдите или зарегистрируйтесь</p>
+        </div>
+        <div id="login-form" class="auth-form">
+            <h3>🔑 ВХОД</h3>
+            <input type="text" id="login-username" placeholder="Логин" autocomplete="off">
+            <input type="password" id="login-password" placeholder="Пароль">
+            <button onclick="loginUser()" class="auth-btn primary">ВОЙТИ</button>
+            <p class="auth-switch">Нет аккаунта? <a href="#" onclick="showRegisterForm()">Зарегистрироваться</a></p>
+            <p class="auth-switch"><a href="#" onclick="guestLoginUser()">Войти как гость</a></p>
+        </div>
+        <div id="register-form" class="auth-form hidden">
+            <h3>📝 РЕГИСТРАЦИЯ</h3>
+            <input type="text" id="reg-username" placeholder="Логин (мин. 3 символа)" autocomplete="off">
+            <input type="password" id="reg-password" placeholder="Пароль (мин. 4 символа)">
+            <input type="password" id="reg-password2" placeholder="Повторите пароль">
+            <button onclick="registerUser()" class="auth-btn primary">ЗАРЕГИСТРИРОВАТЬСЯ</button>
+            <p class="auth-switch">Уже есть аккаунт? <a href="#" onclick="showLoginForm()">Войти</a></p>
+        </div>
+        <div id="auth-error" class="auth-error hidden"></div>
+    </div>
+</div>
+
+<!-- ГЛАВНОЕ МЕНЮ -->
+<div id="main-menu" class="main-menu hidden">
+    <div class="menu-container">
+        <div id="user-profile" class="user-profile">
+            <div class="user-avatar" id="user-avatar">🚗</div>
+            <div class="user-info">
+                <span class="user-name" id="user-name-display">Гость</span>
+                <button class="logout-btn" id="logout-btn" onclick="logoutUser()" title="Выйти">🚪</button>
+            </div>
+        </div>
+        <h1 class="game-title">MONOPOLY</h1>
+        <div class="menu-buttons">
+            <button id="btn-local" class="menu-btn primary">🎮 Играть локально</button>
+            <button id="btn-bot" class="menu-btn secondary">🤖 Играть с ботами</button>
+            <button onclick="createOnlineRoom()" class="menu-btn success">🌐 Создать онлайн-комнату</button>
+            <button onclick="joinOnlineRoom()" class="menu-btn secondary">🔗 Присоединиться к комнате</button>
+            <button id="btn-load" class="menu-btn success">💾 Загрузить игру</button>
+            <button id="btn-settings" class="menu-btn outline">⚙️ Настройки</button>
+            <button id="btn-rules" class="menu-btn outline">📜 Правила</button>
+        </div>
+        <div class="menu-footer">
+            <p>Курсовой проект · Вилданов Р.Р. · ЧЭнК · ИСП-7-23</p>
+        </div>
+    </div>
+</div>
+
+<!-- ВЫБОР ФИГУРОК -->
+<div id="token-select-modal" class="modal hidden">
+    <div class="modal-content token-select-content">
+        <h2>🎨 ВЫБЕРИТЕ ФИГУРКИ</h2>
+        <div class="players-token-select" id="token-select-container"></div>
+        <div class="player-count-selector">
+            <label>Количество игроков:</label>
+            <select id="player-count-select">
+                <option value="2">2 игрока</option>
+                <option value="3">3 игрока</option>
+                <option value="4">4 игрока</option>
+            </select>
+        </div>
+        <button id="start-local-game-btn" class="action-btn primary">🎯 НАЧАТЬ ИГРУ</button>
+        <button id="cancel-token-select" class="action-btn secondary">↩️ НАЗАД</button>
+    </div>
+</div>
+
+<!-- НАСТРОЙКИ -->
+<div id="settings-modal" class="modal hidden">
+    <div class="modal-content settings-content">
+        <span class="close-btn" id="close-settings">&times;</span>
+        <h2>⚙️ НАСТРОЙКИ</h2>
+        <div class="settings-grid">
+            <label>Стартовый капитал:</label>
+            <select id="starting-money">
+                <option value="1000">1000$ (Быстрая)</option>
+                <option value="1500" selected>1500$ (Классика)</option>
+                <option value="2000">2000$ (Богатая)</option>
+                <option value="2500">2500$ (Олигарх)</option>
+            </select>
+            <label>Количество ботов:</label>
+            <select id="bot-count">
+                <option value="1">1 бот</option>
+                <option value="2" selected>2 бота</option>
+                <option value="3">3 бота</option>
+            </select>
+            <label>Скорость анимации:</label>
+            <select id="animation-speed">
+                <option value="0.5">Быстрая</option>
+                <option value="1" selected>Нормальная</option>
+                <option value="2">Медленная</option>
+            </select>
+            <label>Звуки:</label>
+            <select id="sound-enabled">
+                <option value="true" selected>Включены</option>
+                <option value="false">Выключены</option>
+            </select>
+            <label>Режим:</label>
+            <select id="fast-mode">
+                <option value="false" selected>Обычный</option>
+                <option value="true">Быстрая игра</option>
+            </select>
+            <label>Язык:</label>
+            <select id="language-select">
+                <option value="ru">🇷🇺 Русский</option>
+                <option value="en">🇬🇧 English</option>
+            </select>
+        </div>
+        <button id="save-settings-btn" class="action-btn primary">💾 СОХРАНИТЬ</button>
+    </div>
+</div>
+
+<!-- ЗАГРУЗКА ИГРЫ -->
+<div id="load-modal" class="modal hidden">
+    <div class="modal-content load-content">
+        <span class="close-btn" id="close-load">&times;</span>
+        <h2>💾 ЗАГРУЗИТЬ ИГРУ</h2>
+        <div id="save-slots" class="save-slots"></div>
+        <button id="cancel-load" class="action-btn secondary">↩️ НАЗАД</button>
+    </div>
+</div>
+
+<!-- ПРАВИЛА -->
+<div id="rules-modal" class="modal hidden">
+    <div class="modal-content">
+        <span class="close-btn" id="close-rules">&times;</span>
+        <h2>📖 ПРАВИЛА ИГРЫ</h2>
+        <div class="rules-text">
+            <p><strong>1. Цель:</strong> Остаться единственным необанкротившимся игроком.</p>
+            <p><strong>2. Старт:</strong> Каждый получает стартовый капитал. Проход СТАРТА +200$.</p>
+            <p><strong>3. Покупка:</strong> Свободные улицы можно купить. Отказ → аукцион.</p>
+            <p><strong>4. Дома:</strong> Соберите все улицы одного цвета → можно строить дома (до 4) и отель.</p>
+            <p><strong>5. Залог:</strong> Нужны деньги? Заложите недвижимость за 50% стоимости.</p>
+            <p><strong>6. Торговля:</strong> Обменивайтесь улицами и деньгами с другими игроками.</p>
+            <p><strong>7. Тюрьма:</strong> ПОЛИЦИЯ или карта → 3 хода или дубль.</p>
+            <p><strong>8. Шанс/Казна:</strong> Случайные события.</p>
+            <p><strong>9. Поля:</strong> Кнопка "ПОЛЯ" покажет историю каждой улицы!</p>
+        </div>
+    </div>
+</div>
+
+<!-- ДОСТИЖЕНИЯ -->
+<div id="achievement-toast" class="achievement-toast hidden">
+    <div class="achievement-icon">🏆</div>
+    <div class="achievement-text">
+        <div class="achievement-title">Достижение разблокировано!</div>
+        <div class="achievement-name" id="achievement-name"></div>
+    </div>
+</div>
+
+<!-- ИГРОВОЙ ИНТЕРФЕЙС -->
+<div id="game-board-container" class="game-container hidden">
+    <div class="game-header">
+        <div class="players-header" id="players-header"></div>
+        <div class="game-stats">
+            <span id="game-time">00:00</span>
+            <span id="turn-counter">Ход: 0</span>
+            <button id="save-game-btn" class="icon-btn">💾</button>
+            <button id="trade-btn" class="icon-btn">🤝</button>
+            <button id="mortgage-btn" class="icon-btn">🏦</button>
+        </div>
+    </div>
+
+    <div class="game-main">
+        <div class="board-wrapper">
+            <div id="monopoly-board" class="board-grid"></div>
+        </div>
+    </div>
+
+    <div class="bottom-control-panel">
+        <div class="dice-display">
+            <div class="dice-small" id="dice1">⚀</div>
+            <div class="dice-small" id="dice2">⚁</div>
+        </div>
+        <div class="control-buttons">
+            <button id="roll-btn" class="action-btn primary">🎲 БРОСИТЬ</button>
+            <button id="end-turn-btn" class="action-btn secondary" disabled>⏩ ЗАВЕРШИТЬ</button>
+            <button id="build-btn" class="action-btn success" disabled>🏗️ СТРОИТЬ</button>
+            <button id="fields-info-btn" class="action-btn info">📋 ПОЛЯ</button>
+        </div>
+        <div id="game-message" class="game-message">Нажмите "БРОСИТЬ"</div>
+        <button id="menu-back-btn" class="menu-back-btn">🏠 МЕНЮ</button>
+    </div>
+
+    <!-- Панель покупки -->
+    <div id="property-action-panel" class="property-panel hidden">
+        <div class="property-card">
+            <h3 id="prop-name">Улица</h3>
+            <p id="prop-price">Цена: 0$</p>
+            <p id="prop-rent">Аренда: 0$</p>
+            <div class="property-actions">
+                <button id="buy-property-btn" class="action-btn success">💰 КУПИТЬ</button>
+                <button id="auction-property-btn" class="action-btn warning">🔨 АУКЦИОН</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Панель аукциона -->
+    <div id="auction-panel" class="auction-panel hidden">
+        <h3>🔨 АУКЦИОН: <span id="auction-prop-name"></span></h3>
+        <p>Стартовая цена: <span id="auction-start-price">0</span>$</p>
+        <p>Текущая ставка: <span id="auction-current-bid">0</span>$</p>
+        <p>Участник: <span id="auction-bidder">-</span></p>
+        <div class="auction-actions">
+            <input type="number" id="auction-bid-input" min="1" step="10" value="10">
+            <button id="place-bid-btn" class="action-btn primary">📈 СДЕЛАТЬ СТАВКУ</button>
+            <button id="pass-auction-btn" class="action-btn secondary">🚫 ПАС</button>
+        </div>
+    </div>
+
+    <!-- Панель строительства -->
+    <div id="build-panel" class="build-panel hidden">
+        <h3>🏗️ СТРОИТЕЛЬСТВО</h3>
+        <div id="buildable-properties"></div>
+        <button id="close-build-panel" class="action-btn secondary">ЗАКРЫТЬ</button>
+    </div>
+
+    <!-- Панель залога -->
+    <div id="mortgage-panel" class="mortgage-panel hidden">
+        <h3>🏦 ЗАЛОГ НЕДВИЖИМОСТИ</h3>
+        <div id="mortgageable-properties"></div>
+        <button id="close-mortgage-panel" class="action-btn secondary">ЗАКРЫТЬ</button>
+    </div>
+
+    <!-- Панель торговли -->
+    <div id="trade-panel" class="trade-panel hidden">
+        <h3>🤝 ТОРГОВЛЯ</h3>
+        <select id="trade-partner-select"></select>
+        <div class="trade-columns">
+            <div class="trade-column">
+                <h4>Вы предлагаете</h4>
+                <div id="my-properties-trade"></div>
+                <input type="number" id="my-money-trade" placeholder="Деньги" min="0">
+            </div>
+            <div class="trade-column">
+                <h4>Партнёр предлагает</h4>
+                <div id="partner-properties-trade"></div>
+                <input type="number" id="partner-money-trade" placeholder="Деньги" min="0">
+            </div>
+        </div>
+        <div class="trade-actions">
+            <button id="propose-trade-btn" class="action-btn primary">📨 ПРЕДЛОЖИТЬ</button>
+            <button id="close-trade-panel" class="action-btn secondary">ЗАКРЫТЬ</button>
+        </div>
+    </div>
+
+    <!-- Ответ на торговлю -->
+    <div id="trade-response-panel" class="trade-response-panel hidden">
+        <h3>🤝 ПРЕДЛОЖЕНИЕ ОБМЕНА</h3>
+        <p id="trade-offer-text"></p>
+        <div class="trade-response-actions">
+            <button id="accept-trade-btn" class="action-btn success">✅ ПРИНЯТЬ</button>
+            <button id="reject-trade-btn" class="action-btn danger">❌ ОТКЛОНИТЬ</button>
+        </div>
+    </div>
+</div>
+
+<!-- ОВЕРЛЕЙ КУБИКОВ -->
+<div id="dice-overlay" class="dice-overlay hidden">
+    <div class="overlay-dice-container">
+        <div class="big-dice" id="overlay-dice1">🎲</div>
+        <div class="big-dice" id="overlay-dice2">🎲</div>
+        <div id="dice-result-text" class="dice-result-text">Сумма: 0</div>
+    </div>
+</div>
+
+<!-- ВСПЛЫВАЮЩИЕ ЦИФРЫ -->
+<div id="floating-numbers" class="floating-numbers"></div>
+
+<!-- ТУЛТИП -->
+<div id="cell-tooltip" class="cell-tooltip hidden"></div>
+
+<!-- ДИАЛОГ ПОДТВЕРЖДЕНИЯ -->
+<div id="confirm-dialog" class="confirm-dialog hidden">
+    <div class="confirm-content">
+        <p id="confirm-message">Вы уверены?</p>
+        <div class="confirm-actions">
+            <button id="confirm-yes" class="action-btn success">ДА</button>
+            <button id="confirm-no" class="action-btn danger">НЕТ</button>
+        </div>
+    </div>
+</div>
+
+<!-- РУЛЕТКА ШАНС/КАЗНА -->
+<div id="roulette-overlay" class="hidden" style="display:none;">
+    <div class="roulette-content">
+        <h2 id="roulette-title">🎲 ШАНС</h2>
+        <div class="roulette-container">
+            <div class="roulette-track">
+                <div class="roulette-strip" id="roulette-strip"></div>
+            </div>
+            <div class="roulette-arrow">▼</div>
+        </div>
+        <div id="roulette-result" class="roulette-result hidden">
+            <p id="roulette-result-text"></p>
+            <button id="roulette-ok-btn" class="action-btn primary" style="font-size:18px; padding:12px 40px;">OK</button>
+        </div>
+    </div>
+</div>
+
+<script src="lang.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
