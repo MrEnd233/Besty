@@ -36,6 +36,7 @@
 npm install
 npm start
 Открыть http://localhost:3000
+```
 
 Структура проекта
 text
