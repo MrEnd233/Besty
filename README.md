@@ -34,21 +34,23 @@
 ### Установка
 ```bash
 npm install
+
 npm start
+
 Открыть http://localhost:3000
 ```
 
 Структура проекта
 text
-├── index.html
-├── style.css
-├── script.js
-├── lang.js
-├── server.js
-├── database.js
-├── auth.js
-├── gameData.js
-└── package.json
+├── index.html \n
+├── style.css \n
+├── script.js \n
+├── lang.js \n
+├── server.js \n
+├── database.js \n
+├── auth.js \n
+├── gameData.js \n
+└── package.json \n
 
 Правила игры
 Классические правила Монополии: покупка недвижимости, строительство домов и отелей, залог, торговля, аукционы, карты «Шанс» и «Казна», тюрьма.
@@ -81,21 +83,23 @@ text
 ### Setup
 ```bash
 npm install
+
 npm start
 
 Open http://localhost:3000
+```
 
 Project Structure
 text
-├── index.html
-├── style.css
-├── script.js
-├── lang.js
-├── server.js
-├── database.js
-├── auth.js
-├── gameData.js
-└── package.json
+├── index.html \n
+├── style.css \n
+├── script.js \n
+├── lang.js \n
+├── server.js \n
+├── database.js \n
+├── auth.js \n
+├── gameData.js \n
+└── package.json \n
 Game Rules
 Classic Monopoly rules: property buying, house and hotel building, mortgage, trading, auctions, Chance and Community Chest cards, jail.
 
