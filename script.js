@@ -1129,6 +1129,7 @@ function endTurnSingle() {
     if (!gameState.gameActive) return;
     if (!gameState.gameActive || isAnimating) return;
     if (gameState.botTimeout) { clearTimeout(gameState.botTimeout); gameState.botTimeout = null; }
+     recordWealth(); 
     DOM.propertyPanel.classList.add('hidden');
     DOM.buildPanel.classList.add('hidden');
     DOM.auctionPanel.classList.add('hidden');
@@ -1509,7 +1510,7 @@ function handleServerMessage(msg) {
         case 'GAME_STARTED': document.getElementById('lobby-overlay')?.remove(); closeRoomCodeOverlay(); if (msg.gameId) myRoomId = msg.gameId; isMultiplayer = true; syncMultiplayerState(msg.gameState); DOM.mainMenu.classList.add('hidden'); DOM.gameContainer.classList.remove('hidden'); gameState.logEntries = []; createCenterPanel(); renderPlayersHeader(); updateTokensInstant(); updateAllOwnerIndicators(); updateAllHouses(); updateLogDisplay(); updateMyTurnStatus(); gameState.gameStartTime = Date.now(); startGameTimer(); createChatUI(); addLog('🎮 Multiplayer игра началась!', 'info'); break;
         case 'DICE_RESULT': handleDiceResult(msg); break;
         case 'PROPERTY_BOUGHT': if (msg.gameState) syncMultiplayerState(msg.gameState); updateTokensInstant(); updateAllOwnerIndicators(); updateAllHouses(); renderPlayersHeader(); updateUI(); updateCenterPanel(); DOM.propertyPanel.classList.add('hidden'); updateMyTurnStatus(); updateMultiplayerActionButtons(); updateBuildButton(); break;
-        case 'TURN_ENDED': handleTurnEnded(msg); break;
+        case 'TURN_ENDED': handleTurnEnded(msg);recordWealth();  break;
         case 'SYNC_STATE': if (msg.gameState) syncMultiplayerState(msg.gameState); updateAllOwnerIndicators(); updateAllHouses(); updateTokensInstant(); renderPlayersHeader(); updateUI(); updateCenterPanel(); updateMyTurnStatus(); if (msg.message) addLog(msg.message, 'info'); break;
         case 'CHAT_MESSAGE':
     addLog(`💬 ${msg.playerName}: ${msg.text}`, 'info');
@@ -1658,13 +1659,39 @@ function initGame() {
     createCenterPanel(); renderPlayersHeader(); updateTokensInstant(); updateUI(); updateCenterPanel(); updateLogDisplay();
     DOM.rollBtn.disabled = false; DOM.endTurnBtn.disabled = true; DOM.buildBtn.disabled = true;
     gameState.gameStartTime = Date.now(); startGameTimer();
+    wealthHistory = [];
+recordWealth();
     DOM.gameMessage.textContent = `🎯 Ход: ${gameState.players[0].name}`; addLog(`🎮 Игра началась! Капитал: ${settings.startingMoney}$`, 'info');
     updateAllTexts();
 }
 
 let gameTimer = null;
-function startGameTimer() { if (gameTimer) clearInterval(gameTimer); gameTimer = setInterval(() => { if (!gameState.gameActive) return; const elapsed = Math.floor((Date.now() - gameState.gameStartTime) / 1000); DOM.gameTime.textContent = `${Math.floor(elapsed/60).toString().padStart(2,'0')}:${(elapsed%60).toString().padStart(2,'0')}`; }, 1000); }
+function startGameTimer() { 
+    if (gameTimer) clearInterval(gameTimer); 
+    updateGameTimeDisplay(); // Сразу показываем 00:00
+    gameTimer = setInterval(() => { 
+        if (!gameState.gameActive) return; 
+        updateGameTimeDisplay();
+    }, 1000); 
+}
 
+function updateGameTimeDisplay() {
+    if (!gameState.gameStartTime) return;
+    const elapsed = Math.floor((Date.now() - gameState.gameStartTime) / 1000);
+    const mins = Math.floor(elapsed / 60).toString().padStart(2, '0');
+    const secs = (elapsed % 60).toString().padStart(2, '0');
+    
+    // Обновляем в шапке
+    if (DOM.gameTime) {
+        DOM.gameTime.textContent = `${mins}:${secs}`;
+    }
+    
+    // Обновляем в центральной панели
+    const centerTime = document.getElementById('center-time');
+    if (centerTime) {
+        centerTime.textContent = `${mins}:${secs}`;
+    }
+}
 // ==================== ЧАТ ====================
 function createChatUI() {
     // Удаляем старый если есть
@@ -1936,6 +1963,119 @@ window.sellHouse = sellHouse;
 window.toggleMortgage = toggleMortgage;
 
 // ==================== ЦЕНТРАЛЬНАЯ ПАНЕЛЬ ====================
+// ==================== ИСТОРИЯ БОГАТСТВА ДЛЯ ГРАФИКА ====================
+let wealthHistory = []; // [{turn: 0, players: [{name, money}]}]
+
+function recordWealth() {
+    const snapshot = {
+        turn: gameState.turnCount,
+        players: gameState.players.map(p => ({
+            name: p.name,
+            money: p.money,
+            isBankrupt: p.isBankrupt
+        }))
+    };
+    wealthHistory.push(snapshot);
+    if (wealthHistory.length > 100) wealthHistory.shift(); // Ограничим историю
+}
+
+function drawWealthChart() {
+    const canvas = document.getElementById('center-wealth-chart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+    
+    // Очищаем
+    ctx.clearRect(0, 0, width, height);
+    
+    if (wealthHistory.length < 2) {
+        ctx.fillStyle = '#888';
+        ctx.font = '10px Montserrat';
+        ctx.textAlign = 'center';
+        ctx.fillText(currentLang === 'ru' ? 'Недостаточно данных' : 'Not enough data', width/2, height/2);
+        return;
+    }
+    
+    // Находим мин/макс для масштаба
+    let maxMoney = 0;
+    wealthHistory.forEach(snapshot => {
+        snapshot.players.forEach(p => {
+            if (p.money > maxMoney) maxMoney = p.money;
+        });
+    });
+    if (maxMoney === 0) maxMoney = 1500;
+    maxMoney = Math.ceil(maxMoney / 500) * 500; // Округляем вверх
+    
+    const paddingLeft = 35;
+    const paddingRight = 10;
+    const paddingTop = 10;
+    const paddingBottom = 20;
+    const chartWidth = width - paddingLeft - paddingRight;
+    const chartHeight = height - paddingTop - paddingBottom;
+    
+    // Сетка
+    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i <= 4; i++) {
+        const y = paddingTop + (chartHeight / 4) * i;
+        ctx.beginPath();
+        ctx.moveTo(paddingLeft, y);
+        ctx.lineTo(width - paddingRight, y);
+        ctx.stroke();
+        
+        // Подписи оси Y
+        ctx.fillStyle = '#888';
+        ctx.font = '8px Montserrat';
+        ctx.textAlign = 'right';
+        ctx.fillText(Math.round(maxMoney * (4-i) / 4) + '$', paddingLeft - 5, y + 3);
+    }
+    
+    // Линии игроков
+    const colors = gameState.playerColors;
+    
+    gameState.players.forEach((player, idx) => {
+        if (player.isBankrupt) return;
+        
+        const points = [];
+        wealthHistory.forEach((snapshot, snapIdx) => {
+            const p = snapshot.players[idx];
+            if (p && !p.isBankrupt) {
+                const x = paddingLeft + (snapIdx / (wealthHistory.length - 1)) * chartWidth;
+                const y = paddingTop + chartHeight - (p.money / maxMoney) * chartHeight;
+                points.push({ x, y });
+            }
+        });
+        
+        if (points.length < 2) return;
+        
+        // Линия
+        ctx.strokeStyle = colors[idx] || '#fff';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+        for (let i = 1; i < points.length; i++) {
+            ctx.lineTo(points[i].x, points[i].y);
+        }
+        ctx.stroke();
+        
+        // Последняя точка
+        const last = points[points.length - 1];
+        ctx.fillStyle = colors[idx] || '#fff';
+        ctx.beginPath();
+        ctx.arc(last.x, last.y, 3, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Имя игрока
+        ctx.fillStyle = colors[idx] || '#fff';
+        ctx.font = 'bold 8px Montserrat';
+        ctx.textAlign = 'left';
+        ctx.fillText(player.name, last.x + 5, last.y - 2);
+    });
+}
+
+// ==================== ЦЕНТРАЛЬНАЯ ПАНЕЛЬ ====================
 function updateCenterPanel() {
     // Игроки
     const panel = document.getElementById('center-players');
@@ -1943,6 +2083,7 @@ function updateCenterPanel() {
         panel.innerHTML = gameState.players.map((p, i) => {
             const isActive = i === gameState.currentPlayerIndex;
             const inJail = gameState.jailStatus[i]?.inJail;
+            const totalValue = calculatePlayerTotalValue(i);
             return `<div class="center-player-row ${isActive ? 'active-player' : ''} ${p.isBankrupt ? 'bankrupt-player' : ''}">
                 <span class="center-player-token">${p.token}</span>
                 <span class="center-player-name">${p.name}${inJail ? ' 🔒' : ''}</span>
@@ -1953,12 +2094,9 @@ function updateCenterPanel() {
     
     // Ход и время
     const turnEl = document.getElementById('center-turn');
-    const timeEl = document.getElementById('center-time');
     if (turnEl) turnEl.textContent = gameState.turnCount;
-    if (timeEl && gameState.gameStartTime) {
-        const elapsed = Math.floor((Date.now() - gameState.gameStartTime) / 1000);
-        timeEl.textContent = `${Math.floor(elapsed/60).toString().padStart(2,'0')}:${(elapsed%60).toString().padStart(2,'0')}`;
-    }
+    
+    updateGameTimeDisplay();
     
     // Лог
     const logContent = document.getElementById('center-log-content');
@@ -1968,12 +2106,32 @@ function updateCenterPanel() {
         ).join('');
     }
     
-    // Лог в боковой панели (если есть)
+    // График
+    drawWealthChart();
+    
+    // Лог в боковой панели
     if (DOM.logContent) {
         DOM.logContent.innerHTML = gameState.logEntries.map(e => 
             `<div class="log-entry ${e.type}">[${e.time}] ${e.message}</div>`
         ).join('');
     }
+}
+
+// Считаем общую ценность игрока (деньги + недвижимость)
+function calculatePlayerTotalValue(playerIndex) {
+    let total = gameState.players[playerIndex]?.money || 0;
+    gameState.properties.forEach((prop, i) => {
+        if (prop.owner === playerIndex && !prop.mortgaged) {
+            const cell = boardCells[i];
+            if (cell && cell.price) {
+                total += cell.price;
+                if (cell.group && prop.houses > 0) {
+                    total += prop.houses * (houseCosts[cell.group] || 100);
+                }
+            }
+        }
+    });
+    return total;
 }
 
 // ==================== ИНИЦИАЛИЗАЦИЯ ====================
