@@ -92,15 +92,15 @@ Open http://localhost:3000
 
 ### Project Structure
 ```
-├── index.html \n
-├── style.css \n
-├── script.js \n
-├── lang.js \n
-├── server.js \n
-├── database.js \n
-├── auth.js \n
-├── gameData.js \n
-└── package.json \n
+├── index.html 
+├── style.css 
+├── script.js 
+├── lang.js 
+├── server.js 
+├── database.js 
+├── auth.js 
+├── gameData.js 
+└── package.json 
 ```
 
 Game Rules
